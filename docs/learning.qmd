@@ -11,14 +11,32 @@ library(tidyverse)
 library(here)
 library(snakecase)
 ```
-
 ## Importing new data
 
 ```{r}
 here("data-raw/nurses-stress/stress/5c/5c_1586886626/HR.csv.gz") %>%
   read_csv(
-    show_col_types = FALSE, #fjerner boks med information
-    name_repair = to_snake_case, #convert til snaketekst med__
-    n_max = 100 #maks antal numbers
+    show_col_types = FALSE, # fjerner boks med information
+    name_repair = to_snake_case, # convert til snaketekst med__
+    n_max = 100 # maks antal numbers
+  )
+```
+
+## exercise, reading other files
+```{r}
+here("data-raw/nurses-stress/stress/5c/5C_1586886712/HR.csv.gz") |>
+  read_csv(
+    show_col_types = FALSE,
+    name_repair = to_snake_case,
+    n_max = 100
+  )
+```
+
+```{r}
+here("data-raw/nurses-stress/stress/6b/6B_1587569373/EDA.csv.gz") |>
+  read_csv(
+    show_col_types = FALSE,
+    name_repair = to_snake_case,
+    n_max = 100
   )
 ```
