@@ -10,12 +10,13 @@ format: html
 ```{r setup}
 library(tidyverse)
 library(here)
-library(snakecase)
+source(here("R/functions.R"))
 ```
 
 ## Importing new data
 
 ```{r}
+#| eval: false
 here("data-raw/nurses-stress/stress/5c/5c_1586886626/HR.csv.gz") %>%
   read_csv(
     show_col_types = FALSE, # fjerner boks med information
@@ -26,6 +27,7 @@ here("data-raw/nurses-stress/stress/5c/5c_1586886626/HR.csv.gz") %>%
 
 ## exercise, reading other files
 ```{r}
+#| eval: false
 here("data-raw/nurses-stress/stress/5c/5C_1586886712/HR.csv.gz") |>
   read_csv(
     show_col_types = FALSE,
@@ -36,6 +38,7 @@ here("data-raw/nurses-stress/stress/5c/5C_1586886712/HR.csv.gz") |>
 
 
 ```{r}
+#| eval: false
 here("data-raw/nurses-stress/stress/6b/6B_1587569373/EDA.csv.gz") |>
   read_csv(
     show_col_types = FALSE,
@@ -58,29 +61,15 @@ add_numbers <- function(num1, num2) {
 }
 ```
 
-```{r}
-#' Function for filepathhandling for nurses stress data file
-#'
-#' @param file_path path to datafile
-#'
-#' @returns dataset
-read <- function(file_path, max_rows = 100) {
-  data <- file_path %>%
-    readr::read_csv(
-      show_col_types = FALSE,
-      name_repair = to_snake_case,
-      n_max = max_rows,
-    )
-  return(data)
-}
-```
 
 ```{r}
+#| eval: false
 here("data-raw/nurses-stress/stress/5C/5C_1586886626/HR.csv.gz") |>
   read()
 ```
 
 ```{r}
+#| eval: false
 # Outputs only 100 rows
 here("data-raw/nurses-stress/stress/5C/5C_1586886712/HR.csv.gz") |>
   read()
