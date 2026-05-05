@@ -63,12 +63,13 @@ add_numbers <- function(num1, num2) {
 #'
 #' @param file_path path to datafile
 #'
-read <- function(file_path, max_rows=100) {
+#' @returns dataset
+read <- function(file_path, max_rows = 100) {
   data <- file_path %>%
-    read_csv(
+    readr::read_csv(
       show_col_types = FALSE,
       name_repair = to_snake_case,
-      n_max=max_rows,
+      n_max = max_rows,
     )
   return(data)
 }
@@ -92,4 +93,3 @@ here("data-raw/nurses-stress/stress/5C/5C_1586886712/HR.csv.gz") |>
 here("data-raw/nurses-stress/stress/5C/5C_1586886712/HR.csv.gz") |>
   read(max_rows = Inf)
 ```
-
