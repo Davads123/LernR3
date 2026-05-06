@@ -96,3 +96,11 @@ hr_data <- hr_files %>%
 
 hr_data
 ```
+
+## Exercise: Convert map to function and use on sleep
+
+```{r}
+hr_data <- read_all("HR.csv.gz")
+ibi_data <- read_all("IBI.csv.gz")
+bvp_data <- read_all("BVP.csv.gz")
+```
