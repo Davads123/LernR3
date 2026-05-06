@@ -10,6 +10,8 @@ format: html
 ```{r setup}
 library(tidyverse)
 library(here)
+library(fs)
+library(snakecase)
 source(here("R/functions.R"))
 ```
 
@@ -83,4 +85,14 @@ here("data-raw/nurses-stress/stress/5C/5C_1586886712/HR.csv.gz") |>
   read(max_rows = Inf)
 ```
 
-dsa
+## Day 2, using map
+```{r}
+hr_files <- here("data-raw/nurses-stress/") %>%
+  dir_ls(regexp = "HR.csv.gz", recurse = TRUE)
+
+hr_data <- hr_files %>%
+  map(read) %>% # no brackets here!
+  list_rbind(names_to = "file_path_id")
+
+hr_data
+```
