@@ -24,3 +24,17 @@ read_all <- function(filename) {
   return(data)
 }
 
+get_participant_id <- function(data, mutate) {
+  data_with_id <- data %>%
+    dplyr::mutate(
+      id = str_extract(
+        file_path_id,
+        pattern = "/stress/[:alnum:]{2}/"
+      ) %>%
+        stringr::str_remove("/stress/") %>%
+        stringr::str_remove("/"),
+      .before = file_path_id
+    ) %>%
+    dplyr::select(-file_path_id)
+  return(data_with_id)
+}
