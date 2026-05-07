@@ -251,3 +251,61 @@ survey_tidy %>%
   )) %>%
   ungroup()
 ```
+
+
+# Joining datasets
+```{r}
+survey_long
+survey_data
+survey_long |>
+  left_join(survey_tidy)
+
+survey_tidy %>% 
+  count(id,datetime_id) %>% 
+  filter(n>1)
+
+survey_long %>% 
+  right_join(survey_tidy)
+
+survey_long %>% 
+  full_join(survey_tidy)
+
+nrow(full_join(survey_long, survey_tidy))
+
+
+survey_long |>
+  full_join(survey_tidy) |>
+  full_join(hr_data)
+
+```
+
+
+##Cheats
+```{r}
+survey_long |>
+  left_join(survey_tidy)
+survey_tidy |>
+  count(id, datetime_id)
+survey_tidy |>
+  count(id, datetime_id) |>
+  filter(n > 1)
+survey_long |>
+  right_join(survey_tidy)
+survey_long |>
+  full_join(survey_tidy)
+survey_long |>
+  full_join(survey_tidy) |>
+  full_join(hr_data)
+nurses_stress <- survey_long |>
+  full_join(survey_tidy) |>
+  full_join(hr_data)
+nurses_stress |>
+  arrange(id, collection_datetime) |>
+  View()
+```
+
+
+
+
+
+
