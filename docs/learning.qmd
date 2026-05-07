@@ -175,3 +175,79 @@ hr_data %>%
     .by = c(id, collection_datetime)
   )
 ```
+
+```{r}
+#' For time handling
+#'
+#' @param data
+#' @param mutate
+#'
+#' @returns
+#' @export
+#'
+#' @examples
+summarise_by_datetime <- function(data) {
+  summarised_data <- data %>%
+    # Fill in below with the code we just wrote.
+    dplyr::mutate(
+      collection_datetime = lubridate::round_date(
+        collection_datetime,
+        unit = "minute"
+      )
+    ) %>%
+    dplyr::summarise(
+      dplyr::across(
+        tidyselect::where(is.numeric),
+        list(mean = mean, sd = sd, median = median)
+      ),
+      .by = c(id, collection_datetime)
+    )
+  return(summarised_data)
+}
+
+hr_data <- read_all("HR.csv.gz") |>
+  get_participant_id() |>
+  summarise_by_datetime()
+hr_data
+```
+
+## Pivot longer
+```{r}
+survey_data <- here("data-raw/nurses-stress/survey-results.csv.gz") |>
+  read()
+survey_data
+```
+
+```{r}
+survey_tidy <- survey_data %>%
+  mutate(
+    date = mdy(date),
+    start_datetime = as_datetime(paste(date, start_time)),
+    end_datetime = as_datetime(paste(date, end_time)),
+    datetime_id = start_datetime,
+    .before = start_time
+  ) %>%
+  select(-c(date, start_time, end_time, duration))
+survey_tidy
+```
+
+
+
+
+```{r}
+survey_tidy %>%
+  select(
+    id, datetime_id, start_datetime,
+    end_datetime
+  ) %>%
+  pivot_longer(c(
+    start_datetime,
+    end_datetime
+  ), names_to = NULL, values_to = "collection_datetime") %>%
+  group_by(pick(-collection_datetime)) %>%
+  complete(collection_datetime = seq(min(collection_datetime),
+    max(collection_datetime),
+    by = 60
+  )) %>%
+  ungroup()
+```

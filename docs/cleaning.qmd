@@ -4,12 +4,39 @@ author: "Your Name"
 format: html
 ---
 
+
+
 ## Header 1
 
 ```{r setup}
+source(here::here("R/functions.R"))
 #| include: false
 ```
 
 ```{r}
 # Code chunk
 ```
+## Prepare HR data
+```{r}
+hr_data<- read_all("HR.csv.gz")%>% 
+  get_participant_id () %>% 
+summarise_by_datetime()
+hr_data
+
+ibi_data<- read_all("IBI.csv.gz")%>% 
+  get_participant_id () %>% 
+summarise_by_datetime()
+ibi_data
+
+temp_data<- read_all("TEMP.csv.gz")%>% 
+  get_participant_id () %>% 
+summarise_by_datetime()
+temp_data
+
+eda_data<- read_all("EDA.csv.gz")%>% 
+  get_participant_id () %>% 
+summarise_by_datetime()
+eda_data
+
+```
+

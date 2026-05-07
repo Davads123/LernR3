@@ -38,3 +38,55 @@ get_participant_id <- function(data, mutate) {
     dplyr::select(-file_path_id)
   return(data_with_id)
 }
+
+#' For time handling
+#'
+#' @param data
+#' @param mutate
+#'
+#' @returns
+#' @export
+#'
+#' @examples
+summarise_by_datetime <- function(data) {
+  summarised_data <- data %>%
+    # Fill in below with the code we just wrote.
+    dplyr::mutate(
+      collection_datetime = lubridate::round_date(
+        collection_datetime,
+        unit = "minute"
+      )
+    ) %>%
+    dplyr::summarise(
+      dplyr::across(
+        tidyselect::where(is.numeric),
+        list(mean = mean, sd = sd, median = median)
+      ),
+      .by = c(id, collection_datetime)
+    )
+  return(summarised_data)
+}
+
+
+#' Tidy survey data
+#'
+#' @param data
+#'
+#' @returns
+#' @export
+#'
+#' @examples
+tidy_survey_dates <- function(data) {
+  tidied <- data %>%
+    dplyr::mutate(
+      date = lubridate::mdy(date),
+      start_datetime = lubridate::as_datetime(paste(date, start_time)),
+      end_datetime = lubridate::as_datetime(paste(date, end_time)),
+      datetime_id = start_datetime,
+      .before = start_time
+    ) %>%
+    dplyr::select(-c(date, start_time, end_time, duration))
+  tidied
+  return(tidied)
+}
+
